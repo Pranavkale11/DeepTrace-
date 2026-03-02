@@ -1,82 +1,76 @@
 [
     {
-        "id": "camp_001",
-        "title": "Coordinated Hashtag Campaign",
-        "description": "Multiple accounts posting identical content with #Election2024 within a 2-hour window. High coordination detected across Twitter and Facebook platforms.",
+        "id": "camp-001",
+        "title": "Anti-System Propaganda",
+        "name": "Anti-System Propaganda",
+        "status": "active",
         "threat_level": "high",
-        "status": "active",
-        "campaign_type": "political",
-        "detected_at": "2026-02-04T10:30:00Z",
-        "last_activity": "2026-02-04T18:45:00Z",
-        "total_posts": 247,
-        "total_accounts": 47,
-        "reach_estimate": 1250000,
-        "confidence_score": 87.5,
-        "created_at": "2026-02-04T10:30:15Z",
-        "updated_at": "2026-02-04T18:45:30Z"
+        "campaign_type": "disinformation",
+        "detected_at": "2026-02-28T10:00:00Z",
+        "threat_score": 85,
+        "growth": 45,
+        "locations": [
+            {
+                "lat": 28.6139,
+                "lng": 77.2090,
+                "mentions": 1200
+            },
+            {
+                "lat": 19.0760,
+                "lng": 72.8777,
+                "mentions": 850
+            },
+            {
+                "lat": 13.0827,
+                "lng": 80.2707,
+                "mentions": 400
+            }
+        ]
     },
     {
-        "id": "camp_002",
-        "title": "Bot Farm Amplification",
-        "description": "Suspected bot network spreading misinformation about cybersecurity threats. 89 accounts with suspicious creation patterns detected.",
-        "threat_level": "critical",
+        "id": "camp-002",
+        "title": "Border Narrative Shift",
+        "name": "Border Narrative Shift",
         "status": "active",
-        "campaign_type": "malware",
-        "detected_at": "2026-02-03T14:20:00Z",
-        "last_activity": "2026-02-04T19:00:00Z",
-        "total_posts": 1523,
-        "total_accounts": 89,
-        "reach_estimate": 3400000,
-        "confidence_score": 94.2,
-        "created_at": "2026-02-03T14:20:10Z",
-        "updated_at": "2026-02-04T19:00:15Z"
-    },
-    {
-        "id": "camp_003",
-        "title": "Product Review Manipulation",
-        "description": "Commercial campaign involving fake product reviews across Reddit and Twitter. Low threat but high coordination score.",
         "threat_level": "medium",
+        "campaign_type": "influence",
+        "detected_at": "2026-02-27T15:00:00Z",
+        "threat_score": 55,
+        "growth": 12,
+        "locations": [
+            {
+                "lat": 34.0837,
+                "lng": 74.7973,
+                "mentions": 500
+            },
+            {
+                "lat": 31.1048,
+                "lng": 77.1734,
+                "mentions": 300
+            }
+        ]
+    },
+    {
+        "id": "camp-003",
+        "title": "Financial Fud",
+        "name": "Financial Fud",
         "status": "monitoring",
-        "campaign_type": "commercial",
-        "detected_at": "2026-02-02T08:15:00Z",
-        "last_activity": "2026-02-04T12:30:00Z",
-        "total_posts": 156,
-        "total_accounts": 34,
-        "reach_estimate": 450000,
-        "confidence_score": 72.8,
-        "created_at": "2026-02-02T08:15:20Z",
-        "updated_at": "2026-02-04T12:30:45Z"
-    },
-    {
-        "id": "camp_004",
-        "title": "Climate Misinformation Network",
-        "description": "Coordinated spread of climate change denial content. Multiple accounts sharing similar narratives with slight variations.",
-        "threat_level": "high",
-        "status": "active",
-        "campaign_type": "political",
-        "detected_at": "2026-02-01T16:45:00Z",
-        "last_activity": "2026-02-04T17:20:00Z",
-        "total_posts": 389,
-        "total_accounts": 62,
-        "reach_estimate": 2100000,
-        "confidence_score": 81.3,
-        "created_at": "2026-02-01T16:45:30Z",
-        "updated_at": "2026-02-04T17:20:15Z"
-    },
-    {
-        "id": "camp_005",
-        "title": "Cryptocurrency Pump Scheme",
-        "description": "Low-sophistication pump-and-dump scheme targeting small cryptocurrency. Detected early with minimal impact.",
         "threat_level": "low",
-        "status": "resolved",
-        "campaign_type": "commercial",
-        "detected_at": "2026-01-30T11:20:00Z",
-        "last_activity": "2026-01-31T09:15:00Z",
-        "total_posts": 78,
-        "total_accounts": 19,
-        "reach_estimate": 120000,
-        "confidence_score": 68.5,
-        "created_at": "2026-01-30T11:20:25Z",
-        "updated_at": "2026-01-31T09:15:40Z"
+        "campaign_type": "economic",
+        "detected_at": "2026-02-26T08:00:00Z",
+        "threat_score": 25,
+        "growth": 5,
+        "locations": [
+            {
+                "lat": 12.9716,
+                "lng": 77.5946,
+                "mentions": 200
+            },
+            {
+                "lat": 17.3850,
+                "lng": 78.4867,
+                "mentions": 150
+            }
+        ]
     }
 ]

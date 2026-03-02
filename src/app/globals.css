@@ -132,6 +132,18 @@ body {
   text-shadow: 0 0 10px var(--primary-glow);
 }
 
+.text-glow {
+  text-shadow: 0 0 15px var(--primary-glow);
+}
+
+.text-glow-green {
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.4);
+}
+
+.text-glow-green-sm {
+  text-shadow: 0 0 5px rgba(0, 255, 65, 0.2);
+}
+
 .neon-text-blue {
   text-shadow: 0 0 10px var(--secondary-glow);
 }
@@ -196,4 +208,40 @@ body {
 
 .glow-animation {
   animation: pulse-glow 3s infinite ease-in-out;
+}
+
+@keyframes progress {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  50% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-progress {
+  animation: progress 2s infinite ease-in-out;
+}
+
+@keyframes scan-line {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+.animate-scan-line {
+  animation: scan-line 2.5s linear infinite;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }

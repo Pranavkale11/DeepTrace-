@@ -17,7 +17,8 @@ async def get_campaigns(
     page: int = Query(1, ge=1, description="Page number"),
     limit: int = Query(20, ge=1, le=100, description="Items per page"),
     sort_by: str = Query("detected_at", description="Sort field"),
-    order: str = Query("desc", description="Sort order (asc/desc)")
+    order: str = Query("desc", description="Sort order (asc/desc)"),
+    include_geo: bool = Query(False, description="Include geographic intelligence data")
 ):
     """Get list of campaigns with filtering and pagination"""
     
@@ -27,6 +28,17 @@ async def get_campaigns(
         threat_level=threat_level,
         campaign_type=campaign_type
     )
+    
+    # Process campaigns to optionally include/exclude geo data
+    processed_campaigns = []
+    for c in campaigns:
+        cp = c.copy()
+        if not include_geo:
+            cp.pop("locations", None)
+            cp.pop("growth", None)
+        processed_campaigns.append(cp)
+    
+    campaigns = processed_campaigns
     
     # Sort campaigns
     reverse = (order == "desc")
@@ -61,7 +73,12 @@ async def get_campaigns(
 
 @router.get("/{campaign_id}")
 async def get_campaign_detail(campaign_id: str):
-    """Get detailed information about a specific campaign"""
+    """Get detailed information about a specific campaign with AI-powered threat analysis"""
+    
+    # Import AI services
+    from services.embedding_service import get_embedding_service
+    from services.clustering_service import get_clustering_service
+    from services.risk_scoring_service import get_risk_scoring_service
     
     # Get campaign
     campaign = data_loader.get_campaign_by_id(campaign_id)
@@ -71,11 +88,84 @@ async def get_campaign_detail(campaign_id: str):
             detail=f"Campaign with ID '{campaign_id}' not found"
         )
     
-    # Get threat analysis
-    threat_analysis = data_loader.get_threat_score_by_campaign(campaign_id)
-    
-    # Get posts for this campaign
+    # Get posts and accounts for this campaign
     posts = data_loader.get_posts_by_campaign(campaign_id)
+    accounts = data_loader.get_accounts_by_campaign(campaign_id)
+    
+    # ==========================================
+    # AI-Powered Threat Analysis
+    # ==========================================
+    if posts and accounts:
+        # Initialize services
+        embedding_service = get_embedding_service()
+        clustering_service = get_clustering_service()
+        risk_scoring_service = get_risk_scoring_service()
+        
+        # Extract post contents
+        post_contents = [post["content"] for post in posts]
+        
+        # Find similar posts
+        similar_pairs = embedding_service.find_similar_pairs(
+            post_contents,
+            threshold=0.75
+        )
+        
+        # Calculate coordination metrics
+        coordination_metrics = clustering_service.calculate_coordination_score(
+            posts=posts,
+            accounts=accounts,
+            similar_pairs=similar_pairs
+        )
+        
+        # Calculate average narrative similarity
+        avg_similarity = 0.0
+        if similar_pairs:
+            avg_similarity = sum(sim for _, _, sim in similar_pairs) / len(similar_pairs)
+        
+        # Calculate bot involvement
+        bot_count = sum(1 for acc in accounts if acc["account_type"] == "bot")
+        bot_involvement = bot_count / len(accounts) if accounts else 0
+        
+        # Calculate risk score
+        risk_analysis = risk_scoring_service.calculate_risk_score(
+            narrative_similarity=avg_similarity,
+            coordination_metrics=coordination_metrics,
+            bot_involvement=bot_involvement
+        )
+        
+        # Generate threat indicators
+        threat_indicators = risk_scoring_service.calculate_threat_indicators(
+            posts=posts,
+            accounts=accounts,
+            similar_pairs=similar_pairs
+        )
+        
+        # Get recommendations
+        recommendations = risk_scoring_service.generate_recommendations(
+            risk_level=risk_analysis["risk_level"]
+        )
+        
+        # Build AI-powered threat analysis
+        threat_analysis = {
+            "campaign_id": campaign_id,
+            "threat_score": risk_analysis["risk_score"] * 100,  # Scale to 0-100
+            "risk_level": risk_analysis["risk_level"],
+            "confidence": risk_analysis["confidence"],
+            "indicators": threat_indicators,
+            "narrative_analysis": risk_analysis["explanation"],
+            "recommendations": recommendations,
+            "coordination_metrics": {
+                "coordination_score": coordination_metrics["coordination_score"],
+                "cluster_density": coordination_metrics["cluster_density"],
+                "hashtag_overlap": coordination_metrics["hashtag_overlap"],
+                "temporal_coordination": coordination_metrics["temporal_coordination"],
+                "bot_involvement": coordination_metrics["bot_involvement"]
+            },
+            "similar_content_pairs": len(similar_pairs)
+        }
+    else:
+        # Fallback to mock data if no posts/accounts
+        threat_analysis = data_loader.get_threat_score_by_campaign(campaign_id)
     
     # Calculate top hashtags
     hashtag_counts = {}
@@ -104,14 +194,31 @@ async def get_campaign_detail(campaign_id: str):
         for platform, count in platform_counts.items()
     ]
     
-    # Generate mock timeline (simplified)
+    # Generate real timeline from actual post timestamps
+    from collections import defaultdict
+    timeline_data = defaultdict(int)
+    
+    for post in posts:
+        # Extract hour from timestamp
+        posted_at = post.get("posted_at", "")
+        if posted_at:
+            # Simple hour extraction (would use proper datetime in production)
+            hour = posted_at[:13] + ":00:00Z"  # Truncate to hour
+            timeline_data[hour] += 1
+    
+    # Convert to sorted list
     timeline = [
-        {"date": "2026-02-04T10:00:00Z", "post_count": 15},
-        {"date": "2026-02-04T11:00:00Z", "post_count": 89},
-        {"date": "2026-02-04T12:00:00Z", "post_count": 67},
-        {"date": "2026-02-04T13:00:00Z", "post_count": 43},
-        {"date": "2026-02-04T14:00:00Z", "post_count": 33}
+        {"date": hour, "post_count": count}
+        for hour, count in sorted(timeline_data.items())
     ]
+    
+    # If no timeline data, use default
+    if not timeline:
+        timeline = [
+            {"date": "2026-02-04T10:00:00Z", "post_count": 15},
+            {"date": "2026-02-04T11:00:00Z", "post_count": 89},
+            {"date": "2026-02-04T12:00:00Z", "post_count": 67},
+        ]
     
     # Build response
     campaign_detail = campaign.copy()

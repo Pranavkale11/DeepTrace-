@@ -39,11 +39,11 @@ class DataLoader:
         self.accounts = self.load_json_file("accounts.json")
         self.threat_scores = self.load_json_file("threat_scores.json")
         self.reports = self.load_json_file("reports.json")
-        print(f"✅ Loaded {len(self.campaigns)} campaigns")
-        print(f"✅ Loaded {len(self.posts)} posts")
-        print(f"✅ Loaded {len(self.accounts)} accounts")
-        print(f"✅ Loaded {len(self.threat_scores)} threat scores")
-        print(f"✅ Loaded {len(self.reports)} reports")
+        print(f"[OK] Loaded {len(self.campaigns)} campaigns")
+        print(f"[OK] Loaded {len(self.posts)} posts")
+        print(f"[OK] Loaded {len(self.accounts)} accounts")
+        print(f"[OK] Loaded {len(self.threat_scores)} threat scores")
+        print(f"[OK] Loaded {len(self.reports)} reports")
     
     # Campaign methods
     def get_all_campaigns(self) -> List[Dict[str, Any]]:

@@ -61,7 +61,7 @@ export function Hero() {
                                 Initialize System
                             </Button>
                         </Link>
-                        <Link href="/dashboard">
+                        <Link href="/login">
                             <Button size="lg" variant="outline" className="min-w-[200px] h-14 text-lg">
                                 <Activity className="w-5 h-5 mr-2" />
                                 Live Demo Mode

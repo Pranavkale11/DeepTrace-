@@ -2,3 +2,13 @@ fastapi==0.109.0
 uvicorn[standard]==0.27.0
 pydantic==2.5.3
 python-multipart==0.0.6
+
+# AI/ML Dependencies
+sentence-transformers==2.3.1
+networkx==3.2.1
+scikit-learn==1.4.0
+numpy==1.26.3
+torch==2.1.2
+python-louvain==0.16
+google-api-python-client==2.116.0
+python-dotenv==1.0.1

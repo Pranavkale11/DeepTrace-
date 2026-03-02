@@ -61,6 +61,13 @@ export interface CampaignsResponse {
             total_accounts: number;
             reach_estimate: number;
             confidence_score: number;
+            threat_score: number;
+            growth?: number;
+            locations?: Array<{
+                lat: number;
+                lng: number;
+                mentions: number;
+            }>;
         }>;
         pagination: {
             current_page: number;
@@ -303,6 +310,16 @@ export const campaignsAPI = {
         console.log(`🔄 Fetching campaign accounts (${id}) from:`, `${API_BASE_URL}/api/campaigns/${id}/accounts`);
         const response = await fetchAPI<CampaignAccountsResponse>(`/api/campaigns/${id}/accounts`);
         console.log(`✅ Campaign accounts (${id}) received:`, response);
+        return response;
+    },
+
+    /**
+     * Get geo intelligence data
+     */
+    getGeoIntelligence: async (): Promise<CampaignsResponse> => {
+        console.log('🔄 Fetching geo intelligence from:', `${API_BASE_URL}/api/campaigns?include_geo=true`);
+        const response = await fetchAPI<CampaignsResponse>('/api/campaigns?include_geo=true');
+        console.log('✅ Geo intelligence received:', response);
         return response;
     },
 };
