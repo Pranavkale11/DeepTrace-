@@ -171,11 +171,7 @@ pip install torch --index-url https://download.pytorch.org/whl/cpu
 - Recharts
 - Framer Motion
 - Lucide React
----
 
-## 📜 License
-
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
 ---
 
